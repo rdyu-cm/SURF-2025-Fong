@@ -1,0 +1,35 @@
+# force field parameters: https://pubs.aip.org/aip/jcp/article/158/13/134508/2883262/Molecular-modeling-and-simulation-of-aqueous
+# 
+
+import "nitrate_forceField_schaefer.lt"
+
+nitrate inherits nitrate_forceField {
+
+  # AtomID  MolID  AtomType  charge   X       Y         Z
+  write("Data Atoms") {
+    $atom:n $mol:. @atom:N_NO3 0.8603 -4.19591        2.39851       0.00000
+    $atom:o1 $mol:. @atom:O_NO3 -0.6201 -4.88591        3.56265        0.00000
+    $atom:o2 $mol:. @atom:O_NO3 -0.6201 -2.84274        2.41400        0.00000
+    $atom:o3 $mol:. @atom:O_NO3 -0.6201 -4.85909        1.21889        0.00000
+  }
+
+  write("Data Bonds") {
+  # bondID bondType atomID1 atomID2
+  $bond:no1 @bond:N-O $atom:n $atom:o1
+  $bond:no2 @bond:N-O $atom:n $atom:o2
+  $bond:no3 @bond:N-O $atom:n $atom:o3
+  }
+
+  write("Data Angles") {
+    $angle:ono1 @angle:O-N-O $atom:o1 $atom:n $atom:o2
+    $angle:ono2 @angle:O-N-O $atom:o2 $atom:n $atom:o3
+    $angle:ono3 @angle:O-N-O $atom:o1 $atom:n $atom:o3
+  }
+
+  write("Data Dihedrals") {
+    $dihedral:oono1 @dihedral:O-O-N-O $atom:o1 $atom:o2 $atom:n $atom:o3
+    $dihedral:oono2 @dihedral:O-O-N-O $atom:o1 $atom:o3 $atom:n $atom:o2
+    $dihedral:oono3 @dihedral:O-O-N-O $atom:o2 $atom:o3 $atom:n $atom:o1
+  }
+
+}

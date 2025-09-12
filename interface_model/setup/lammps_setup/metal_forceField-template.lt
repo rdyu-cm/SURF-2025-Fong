@@ -1,0 +1,12 @@
+metal_forceField {
+
+write_once("Data Masses") {
+@atom:Cu 63.546
+}  # end of atom masses 
+
+write_once("In Settings") {
+pair_coeff   @atom:Cu  @atom:Cu     {METAL_EPS}   {METAL_SIGMA}
+}  # end of pair coeffs 
+
+}  # end of file 
+

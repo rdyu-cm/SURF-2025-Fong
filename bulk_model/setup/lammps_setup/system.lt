@@ -1,0 +1,12 @@
+import "h2o.lt" 
+import "cation.lt" 
+import "nitrate.lt" 
+h2o_molecule = new h2o[64]
+cation_molecule = new cation[3]
+nitrate_molecule = new nitrate[3]
+write_once("Data Boundary") {
+      0 15.522965162722684 xlo xhi 
+      0 15.522965162722684 ylo yhi 
+      0 15.522965162722684 zlo zhi 
+    } 
+

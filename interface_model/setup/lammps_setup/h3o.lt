@@ -1,0 +1,30 @@
+h3o {
+
+  # AtomID  MolID  AtomType  charge   X       Y         Z
+  write("Data Atoms") {
+    $atom:o    $mol    @atom:O   -0.5    0.00000  0.00000   0.000000
+    $atom:h1   $mol    @atom:H    0.5    -0.140   0.676     0.895
+    $atom:h2   $mol    @atom:H    0.5    0.878    -0.394    -0.113
+    $atom:h3   $mol    @atom:H    0.5    -0.681   -0.673    -0.145
+  }
+
+  write_once("Data Masses") {
+    @atom:O 15.9994
+    @atom:H 1.008
+  }
+
+  write_once("In Settings") {
+    bond_coeff   @bond:OH           1000.0  1.0 
+    # explanation:  http://lammps.sandia.gov/doc/bond_harmonic.html
+
+    angle_coeff  @angle:HOH         1000.0  109.47
+    # explanation:  http://lammps.sandia.gov/doc/angle_harmonic.html
+ 
+    pair_coeff   @atom:O @atom:O    0.1553  3.166 
+    pair_coeff   @atom:H @atom:H    0.0     0.0
+    pair_coeff   @atom:O @atom:H    0.0     0.0
+    # explanation:  http://lammps.sandia.gov/doc/pair_charmm.html
+ 
+  }
+
+}

@@ -1,0 +1,23 @@
+seed -1
+
+    tolerance 2.0 
+
+    filetype xyz 
+
+    output packed_box.xyz
+
+structure h2o.xyz
+        number 64
+        inside box 0. 0. 0. 13.970668646450417 13.970668646450417 13.970668646450417
+        end structure 
+
+structure cation.xyz
+        number 3
+        inside box 0. 0. 0. 13.970668646450417 13.970668646450417 13.970668646450417
+        end structure 
+
+structure nitrate.xyz
+        number 3
+        inside box 0. 0. 0. 13.970668646450417 13.970668646450417 13.970668646450417
+        end structure 
+

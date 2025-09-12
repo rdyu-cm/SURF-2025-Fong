@@ -1,0 +1,23 @@
+seed -1
+
+    tolerance 2.0 
+
+    filetype xyz 
+
+    output packed_box_elyte.xyz
+
+structure h2o.xyz
+        number 32
+        inside box 0. 0. 0. 7.962588041585474 6.8958035238832025 12.224161429487237
+        end structure 
+
+structure h3o.xyz
+        number 1
+        inside box 0. 0. 0. 7.962588041585474 6.8958035238832025 12.224161429487237
+        end structure 
+
+structure nitrate.xyz
+        number 1
+        inside box 0. 0. 0. 7.962588041585474 6.8958035238832025 12.224161429487237
+        end structure 
+

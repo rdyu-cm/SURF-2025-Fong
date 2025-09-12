@@ -1,0 +1,73 @@
+log nvt.log
+#==============
+# Parameters
+#==============
+
+units           metal
+timestep {TIMESTEP}
+dimension 3
+boundary p p p
+atom_style      full
+atom_modify     map yes
+newton          on
+#bond_style      harmonic
+#angle_style     harmonic
+#dihedral_style  opls 
+neigh_modify every 1 delay 0 check yes # change no --> yes for nvt
+#kspace_style pppm 1.0e-5
+
+# read in coordinate file --> end of NPT run
+#read_restart run2.restart
+read_data "system_nobonds.data"
+
+pair_style      mace no_domain_decomposition
+pair_coeff      * * /home/x-ryu3/LAMMPS_interface/setup/mace-mpa-0-medium.model-lammps.pt O H Ti H
+pair_modify shift yes mix arithmetic
+
+# import non-bonded (LJ) interaction parameters
+#include "system.in.settings"
+
+#run 0
+#change_box all x final 0 {BOX_SIZE} y final 0 {BOX_SIZE} z final 0 {BOX_SIZE} remap units box
+
+reset_timestep 0
+
+#==============
+# Energy minimization
+#==============
+group metal type 3 4
+fix freeze metal setforce 0.0 0.0 0.0
+minimize 1.0e-5 1.0e-7 1000 10000
+reset_timestep 0
+
+#==============
+# NVT run
+#==============
+group mobile subtract all metal
+velocity mobile create {TEMP} 12345
+variable t equal step
+group gSPCE type  1  2
+group cation type 3
+
+dump unwrapped all dcd 1000 nvt_unwrapped_$t.dcd 
+dump_modify unwrapped unwrap yes
+
+# fix water bonds and angles of water and nitrate
+# fix fShake WaterNitrate shake 0.0001 100 0 b 1 2 a 1 2
+
+dump nvtxyz all xyz 1000 nvt_traj.xyz
+dump_modify nvtxyz first yes
+
+# NVT ensemble
+compute mobile_temp mobile temp
+fix NVT mobile nvt temp {TEMP} {TEMP} 0.1
+
+thermo_style custom time step c_mobile_temp press vol density pe ke etotal ecoul elong evdwl epair
+thermo 1000
+thermo_modify norm no flush yes
+
+restart 1000 run1.restart run2.restart
+write_dump all xyz initial_structure.xyz 
+run   {N_NVT_STEPS}
+write_dump all xyz final_nvt_structure.xyz 
+write_data end_nvt.data

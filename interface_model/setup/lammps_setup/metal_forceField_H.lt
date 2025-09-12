@@ -1,0 +1,12 @@
+metal_forceField {
+
+write_once("Data Masses") {
+@atom:H 1.008
+}  # end of atom masses 
+
+write_once("In Settings") {
+pair_coeff   @atom:H  @atom:H     0   0
+}  # end of pair coeffs 
+
+}  # end of file 
+

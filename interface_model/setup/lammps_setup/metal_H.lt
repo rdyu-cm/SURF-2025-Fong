@@ -1,0 +1,8 @@
+import "metal_forceField_H.lt"
+
+metal_H inherits metal_forceField{ 
+
+write("Data Atoms") {
+    $atom:mt $mol @atom:H 0.0 0.000  0.0000   0.0000000
+  }
+} 

@@ -1,0 +1,26 @@
+seed -1
+
+tolerance 0.5 
+
+filetype xyz 
+
+output packed_box_sandwich.xyz
+
+structure packed_box_elyte.xyz
+number 1
+center
+fixed 4.423660023103041 4.423660023103041 35.65936059260447 0. 0. 0.
+end structure 
+
+structure packed_box_elyte.xyz
+number 1
+center
+fixed 4.423660023103041 4.423660023103041 6.791200794159575 0. 0. 0.
+end structure 
+
+structure slab.xyz
+number 1
+center
+fixed 4.423660023103041 4.423660023103041 21.225280693382025 0. 0. 0.
+end structure 
+

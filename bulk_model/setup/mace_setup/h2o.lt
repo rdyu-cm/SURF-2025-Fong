@@ -1,0 +1,56 @@
+# SPCE ("extended simple point charge") water
+# (See Berendsen H.J.C et al., J.Phys.Chem. Vol91 pp.6269-6271,1987 for details)
+
+h2o {
+
+  ###### Molecule topology ###### 
+
+  # AtomID  MoleculeID AtomType Charge   X        Y        Z
+
+  write("Data Atoms") {
+    $atom:o    $mol    @atom:O -0.8476  0.0000000 0.00000 0.000000
+    $atom:h1   $mol    @atom:H  0.4238  0.8164904 0.00000  0.5773590
+    $atom:h2   $mol    @atom:H  0.4238  -0.8164904 0.00000 0.5773590
+  }
+  # Note: LAMMPS expects an integer in the 2nd column (the Molecule-ID number).
+  #       If we put "$mol" there, moltemplate will generate this integer for you
+
+  # A list of the bonds in the molecule:
+  # BondID    BondType  AtomID1  AtomID2
+
+  write("Data Bonds") {
+    $bond:OH1 @bond:OH $atom:o $atom:h1
+    $bond:OH2 @bond:OH $atom:o $atom:h2
+  }
+
+  # A list of the angles in the molecule:
+  # AngleID    AngleType  AtomID1  AtomID2 AtomID3
+
+  write("Data Angles") {
+    $angle:HOH @angle:HOH $atom:h1 $atom:o $atom:h2
+  }
+
+  # The mass of each atom type:
+
+  write_once("Data Masses") {
+    @atom:O 15.9994
+    @atom:H 1.008
+  }
+
+  ###### Force field parameters ###### 
+
+  write_once("In Settings") {
+    bond_coeff   @bond:OH           1000.0  1.0 
+    # explanation:  http://lammps.sandia.gov/doc/bond_harmonic.html
+
+    angle_coeff  @angle:HOH         1000.0  109.47
+    # explanation:  http://lammps.sandia.gov/doc/angle_harmonic.html
+ 
+    pair_coeff   @atom:O @atom:O    0.1553  3.166 
+    pair_coeff   @atom:H @atom:H    0.0     0.0
+    pair_coeff   @atom:O @atom:H    0.0     0.0
+    # explanation:  http://lammps.sandia.gov/doc/pair_charmm.html
+ 
+  }
+
+} # end of definition of "SPCE" water molecule type

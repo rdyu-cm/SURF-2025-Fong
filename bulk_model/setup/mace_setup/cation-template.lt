@@ -1,0 +1,16 @@
+cation {
+
+  # AtomID  MolID  AtomType  charge   X       Y         Z
+  write("Data Atoms") {
+    $atom:Cation $mol @atom:Cation    {ION_CHARGE}    0.00000  0.00000   0.000000
+  }
+
+  write_once("Data Masses") {
+    @atom:Cation {CATION_MASS}
+  }
+
+  write_once("In Settings") {
+    pair_coeff @atom:Cation @atom:Cation  {CATION_EPS} {CATION_SIGMA}
+  }
+
+}

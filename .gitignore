@@ -1,0 +1,13 @@
+# Python bytecode (auto-generated)
+__pycache__/
+*.pyc
+*.pyo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE temporary files
+.vscode/settings.json
+*.swp
+*.swo

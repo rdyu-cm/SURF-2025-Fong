@@ -1,0 +1,20 @@
+seed -1
+
+tolerance 0.5 
+
+filetype xyz 
+
+output packed_box_tower.xyz
+
+structure packed_box_elyte.xyz
+number 1
+center
+fixed {SLAB_SIZE} {SLAB_SIZE} {ELYTE_HEIGHT_TOP} 0. 0. 0.
+end structure 
+
+structure slab.xyz
+number 1
+center
+fixed {SLAB_SIZE} {SLAB_SIZE} {ELECTRODE_HEIGHT} 0. 0. 0.
+end structure 
+

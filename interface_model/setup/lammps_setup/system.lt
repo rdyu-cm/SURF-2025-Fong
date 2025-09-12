@@ -1,0 +1,16 @@
+import "h2o.lt" 
+import "h3o.lt" 
+import "nitrate.lt" 
+import "metal_Ti.lt" 
+import "metal_H.lt" 
+h2o_molecule0 = new h2o[32]
+h3o_molecule1 = new h3o[1]
+nitrate_molecule2 = new nitrate[1]
+metal_Ti_molecule3 = new metal_Ti[96]
+metal_H_molecule4 = new metal_H[192]
+write_once("Data Boundary") {
+      0 8.847320046206082 xlo xhi 
+      0 7.66200391542578 ylo yhi 
+      0 37.7401597984449 zlo zhi 
+    } 
+
