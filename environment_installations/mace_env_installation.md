@@ -31,7 +31,9 @@ pip install -e .
 ```
 
 Anvil Module Loading:
+```
 module load cuda/11.4.2
 module load cudnn/cuda-11.4_8.2
 module load conda
 conda activate env_name
+```
