@@ -307,7 +307,7 @@ def plot_f(data, data_err, labels, title, observable, folder):
     element_2 = title.split('-')[1]
     bins, rdf, rdf_error = combine_mdanalysis_rdf(path, file, runs, r_max, n_bins, element_1, element_2)
     
-    plt.plot(bins, rdf, 'b-', linewidth=3, label='MLP')
+    plt.plot(bins, rdf, 'b', ls = ':', linewidth=3, label='MLP')
 
     plt.fill_between(bins, 
                     rdf - rdf_error, 
@@ -368,7 +368,7 @@ def plot_everything(data, data_err, labels, title, observable, folder, ax):
     element_2 = title.split('-')[1]
     bins, rdf, rdf_error = combine_mdanalysis_rdf(path, file, runs, r_max, n_bins, element_1, element_2)
 
-    ax.plot(bins, rdf, 'b-', linewidth=1, label='MLP')
+    ax.plot(bins, rdf, 'b', ls=':', linewidth=1, label='MLP')
 
     ax.fill_between(bins, 
                     rdf - rdf_error, 

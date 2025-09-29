@@ -32,17 +32,19 @@ def access_dft_energies_forces(path,location, length):
             forces.append(float(lines[j+2].split()[3]))
     return energies, forces
 
-def plot_force_distr_together(parameter2,parameter3):
+def plot_force_distr_together(parameter2,parameter3,kpoints):
     '''
     graphs forces for two dft runs together and saves them as a png in a new force_distribution folder
+    graphs forces in the x,y, and z directions individually 
     
     notes:
     - number of forces must be the same
     '''
+    #all forces
     x = np.linspace(0,len(parameter2),len(parameter2))
     plt.clf()
-    plt.plot(x,parameter2,color = 'purple', label = f'Force Distribution (meV/angstrom), 2x2 k points')
-    plt.plot(x,parameter3,color = 'r', label = f'Force Distribution (meV/angstrom), 3x3 k points')
+    plt.plot(x,parameter2,color = 'purple', label = f'Force Distribution (meV/angstrom), {kpoints[0]}x{kpoints[0]} k points')
+    plt.plot(x,parameter3,color = 'r', label = f'Force Distribution (meV/angstrom), {kpoints[1]}x{kpoints[1]} k points')
     plt.xlabel('Force number')
     plt.ylabel(f'Force (meV/angstrom)')
     plt.title(f'Forces on Converged Slab')
@@ -51,11 +53,42 @@ def plot_force_distr_together(parameter2,parameter3):
     os.makedirs('force_distribution', exist_ok = True)
     fig = plt.gcf()
     fig.savefig('force_distribution/force_distribution.png', dpi=300)
+    
+    #x,y,z directions
+    plot_force_distr_together_coordinate(parameter2,parameter3, kpoints, 'x')
+    plot_force_distr_together_coordinate(parameter2,parameter3, kpoints, 'y')
+    plot_force_distr_together_coordinate(parameter2,parameter3, kpoints, 'z')
+    
+def plot_force_distr_together_coordinate(parameter2,parameter3,kpoints, direction):
+    '''
+    graphs forces together in a particular direction
+        
+    notes:
+    - number of forces must be the same
+    '''
+    direction_conv = np.array(['x','y','z'])
+    parameter2 = parameter2[np.where(direction_conv == direction)[0][0]::3]
+    parameter3 = parameter3[np.where(direction_conv == direction)[0][0]::3]
+    x = np.linspace(0,len(parameter2),len(parameter2))
+    plt.clf()
+    plt.plot(x,parameter2,color = 'purple', label = f'Force Distribution ({direction}) (meV/angstrom), {kpoints[0]}x{kpoints[0]} k points')
+    plt.plot(x,parameter3,color = 'r', label = f'Force Distribution ({direction}) (meV/angstrom), {kpoints[1]}x{kpoints[1]} k points')
+    plt.xlabel('Force number')
+    plt.ylabel(f'Force (meV/angstrom)')
+    plt.title(f'Forces on Converged Slab ({direction})')
+    plt.ticklabel_format(style='scientific', axis='both', scilimits=(-2,2))
+    plt.legend()
+    os.makedirs('force_distribution', exist_ok = True)
+    fig = plt.gcf()
+    fig.savefig(f'force_distribution/force_distribution{direction}.png', dpi=300)
 
 def plot_force_distr(parameter, kpoints):
     '''
     graphs forces a single dft run and saves them as a png in a new force_distribution folder
+    also graphs the x,y, and z forces individually
     '''
+    
+    #all forces
     x = np.linspace(0,len(parameter),len(parameter))
     plt.clf()
     plt.plot(x,parameter,color = 'purple', label = f'Force Distribution (meV/angstrom), {kpoints}x{kpoints} k points')
@@ -67,27 +100,52 @@ def plot_force_distr(parameter, kpoints):
     os.makedirs('force_distribution', exist_ok = True)
     fig = plt.gcf()
     fig.savefig(f'force_distribution/force_distribution{kpoints}.png', dpi=300)
+    
+    #x,y,z forces
+    plot_force_distr_coordinate(parameter, kpoints, 'x')
+    plot_force_distr_coordinate(parameter, kpoints, 'y')
+    plot_force_distr_coordinate(parameter, kpoints, 'z')
+    
+def plot_force_distr_coordinate(parameter, kpoints, direction):
+    '''
+    graphs forces in a particular direction
+    input:
+    - direction: x,y, or z
+    '''
+    direction_conv = np.array(['x','y','z'])
+    parameter = parameter[np.where(direction_conv == direction)[0][0]::3]
+    x = np.linspace(0,len(parameter),len(parameter))
+    plt.clf()
+    plt.plot(x,parameter,color = 'purple', label = f'Force Distribution ({direction}) (meV/angstrom), {kpoints}x{kpoints} k points')
+    plt.xlabel('Force number')
+    plt.ylabel(f'Force (meV/angstrom)')
+    plt.title(f'Forces on Converged Slab ({direction})')
+    plt.ticklabel_format(style='scientific', axis='both', scilimits=(-2,2))
+    plt.legend()
+    os.makedirs('force_distribution', exist_ok = True)
+    fig = plt.gcf()
+    fig.savefig(f'force_distribution/force_distribution{kpoints}{direction}.png', dpi=300)
 
 def main():
-    path = '/anvil/scratch/x-ryu3/LAMMPS_interface/setup/DFT_slab_test/3pbc/'
+    path = '/anvil/scratch/x-ryu3/LAMMPS_interface/setup/DFT_slab_test/just_ti/'
     location = 'dft_calcs'
     
     #extracting dft energy and forces
-    two_energy, two_forces = access_dft_energies_forces(path, location, (2,3))
-    three_energy, three_forces = access_dft_energies_forces(path, location, (3,4))
+    two_energy, two_forces = access_dft_energies_forces(path, location, (1,2))
+    three_energy, three_forces = access_dft_energies_forces(path, location, (2,3))
     energy_dif = np.array(three_energy) - np.array(two_energy)
     
     #atomic hartree units to ev
     au_ev = 27.2114079527
     #number of atoms in your system
-    n_atoms = 288
+    n_atoms = 96
     #energy conversions and RMSE calculation
     two_forces = np.array(two_forces) * au_ev / 0.521 * 1000
     three_forces = np.array(three_forces) * au_ev / 0.521 * 1000
     
-    plot_force_distr_together(two_forces,three_forces)
-    plot_force_distr(two_forces, 2)
-    plot_force_distr(three_forces,3)
+    plot_force_distr_together(two_forces,three_forces, (1,2))
+    plot_force_distr(two_forces, 1)
+    plot_force_distr(three_forces,2)
     
     
     
