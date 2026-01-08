@@ -27,3 +27,15 @@ This repository contains most of the set up and analysis code for this project. 
         - train: Currently empty
         - verification: Currently empty
     - environment_installations: Contains .md files for installing conda environments
+
+## Sample Scripts
+- MACE in LAMMPS
+    - Relevant Folder: interface_model/setup/lammps_setup
+    - Very similar to regular LAMMPS, but with a couple of differences
+        - In the system.in file, you have to change the pair_style and pair_potential to point to the model you want to use
+        - LAMMPS must be rebuilt to be mace compatible. A build is on the fong repo, but without ml-iap. 
+        - Note: .model files have to be converted to .pt files which are compatible with LAMMPS. This can be done with a file on the mace github, mace/cli/create_lammps_file.py
+- MACE in ASE
+    - Relevant Folder: bulk_model/setup/mace_setup/mace_runs
+    - The run_1.py file takes in a .xyz file and runs dynamics with a mace foundation model. A different foundation model can be used with MACECalculator.
+
